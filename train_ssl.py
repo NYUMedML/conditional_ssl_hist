@@ -24,8 +24,8 @@ import condssl.loader
 import condssl.builder
 
 import sys
-from inception_v4 import InceptionV4
-from dataloader import TCGA_CPTAC_Dataset
+from network.inception_v4 import InceptionV4
+from dataset.dataloader import TCGA_CPTAC_Dataset
 
 
 class TwoCropsTransform:
@@ -170,23 +170,11 @@ def accuracy(output, target, topk=(1,)):
         return res
 
 
-
-
-
-model_names = sorted(name for name in models.__dict__
-    if name.islower() and not name.startswith("__")
-    and callable(models.__dict__[name]))
-
-model_names += ['inception_v4']
     
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 # parser.add_argument('data', metavar='DIR',
 #                     help='path to dataset')
-parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet50',
-                    choices=model_names,
-                    help='model architecture: ' +
-                        ' | '.join(model_names) +
-                        ' (default: resnet50)')
+
 parser.add_argument('-j', '--workers', default=16, type=int, metavar='N',
                     help='number of data loading workers (default: 32)')
 parser.add_argument('--epochs', default=200, type=int, metavar='N',
@@ -317,7 +305,8 @@ print('Create dataset')
 train_dataset = TCGA_CPTAC_Dataset(cptac_dir=args.data_dir + "/CPTAC/tiles/",
                           tcga_dir=args.data_dir + "/TCGA/tiles/",
                           split_dir=arg.split_dir,
-                          transform=TwoCropsTransform(transforms.Compose(augmentation)), batch_slide_num=args.batch_slide_num)
+                          transform=TwoCropsTransform(transforms.Compose(augmentation)), 
+                          batch_slide_num=args.batch_slide_num)
 
 
 print("Dataset Created ...")
