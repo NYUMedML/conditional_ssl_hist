@@ -18,8 +18,6 @@ class MoCo(nn.Module):
         super(MoCo, self).__init__()
 
         self.condition = condition
-        print("Conditional SSL: {}".format(self.condition))
-
         self.K = K
         self.m = m
         self.T = T
@@ -95,7 +93,6 @@ class MoCo(nn.Module):
         # shuffled index for this gpu
         gpu_idx = torch.distributed.get_rank()
         idx_this = idx_shuffle.view(num_gpus, -1)[gpu_idx]
-        print(num_gpus)
         return x_gather[idx_this], idx_unshuffle
 
     @torch.no_grad()
@@ -179,7 +176,6 @@ def concat_all_gather(tensor):
     Performs all_gather operation on the provided tensors.
     *** Warning ***: torch.distributed.all_gather has no gradient.
     """
-    print(torch.distributed.get_world_size())
     tensors_gather = [torch.ones_like(tensor)
         for _ in range(torch.distributed.get_world_size())]
     torch.distributed.all_gather(tensors_gather, tensor, async_op=False)

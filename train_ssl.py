@@ -244,6 +244,8 @@ parser.add_argument('--split_dir', default='./split/', type=str,
 parser.add_argument('--out_dir', default='./models/', type=str,
                     help='path to output directory')
 parser.add_argument('--batch_slide_num', default=4, type=int)
+parser.add_argument('--condition', default=True, type=bool)
+
 args = parser.parse_args()
 
 print(args.out_dir)
@@ -273,7 +275,7 @@ print("=> creating model '{}'".format(args.arch))
 encoder = InceptionV4
 
 model = condssl.builder.MoCo(
-    encoder, args.moco_dim, args.moco_k, args.moco_m, args.moco_t, args.mlp, condition=True)
+    encoder, args.moco_dim, args.moco_k, args.moco_m, args.moco_t, args.mlp, condition=args.condition)
 
 model = model.cuda()
 torch.distributed.init_process_group('nccl')

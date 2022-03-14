@@ -19,7 +19,7 @@ recurrence risk by our Cox regression. The high risk cohort includes the top hal
 patients of highest estimated risks; the low risk cohort includes the lower half.
 
 <p align="center">
-<img src="./plots/progression_plot.png" width="200"/>
+<img src="./plots/progression_plot.png" width="400"/>
 </p>
 
 ## Data 
@@ -40,4 +40,12 @@ To preprocess the WSIs, run the code in preprocessing folder.
 
 ## Self-supervised learning
 
-## 
+Run the command to train the Inception V4 with conditional SSL on two-layer sampling.
+
+`torchrun train.py --data_dir {data_dir} --split_dir {annotation_dir} --batch_slide_num {number of slides in batch} --cos --out_dir {output_dir}`
+
+## Extract features
+
+To extract features, we first extract the tile representations with pretrained Inception V4.
+
+''
