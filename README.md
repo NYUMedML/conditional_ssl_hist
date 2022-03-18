@@ -48,4 +48,4 @@ Run the command to train the Inception V4 with conditional SSL on two-layer samp
 
 To extract features, we first extract the tile representations with pretrained Inception V4.
 
-''
+`python extract_embeddings.py --feature_extractor_dir {checkpoint of pretrained feature extractor} --subtype_model_dir {subtype model} --root_dir {tiles directory} --split_dir {annotation files} --out_dir {output directory}`
