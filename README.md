@@ -46,6 +46,25 @@ Run the command to train the Inception V4 with conditional SSL on two-layer samp
 
 ## Extract features
 
-To extract features, we first extract the tile representations with pretrained Inception V4.
+To extract features, we first extract the tile representations with SSL pretrained Inception V4.
 
 `python extract_embeddings.py --feature_extractor_dir {checkpoint of pretrained feature extractor} --subtype_model_dir {subtype model} --root_dir {tiles directory} --split_dir {annotation files} --out_dir {output directory}`
+
+Then we fit the clusters of the tile reprenstations in the training data, and assign the clusters to tiles in the validation and test set. After clustering each tile, we aggregate tile
+probabilities with average pooling on clusters to generate the slide-level features. Run the following commends:
+
+`python get_clusters.py --data_dir {data_dir} --cluster_type {method_of_clustering} --n_cluster {number_of_clusters} --out_dir {out_dir}`
+
+## Survival model (Cox-PH)
+
+We run the Cox-PH regression on the extracted slide-level features and the time and status of recurrence.
+
+The triplet of features and
+slide labels $\{(v_j , y_j , t_j)\}^N_{j=1}$ will be used, where $v_j$ is the vector of cluster features, $y_j$ is the
+binary label indicating LSCC recurrence, and $t_j$ encodes the recurrence-free followup times
+for the patient. i.e. If a patient was not observed to have recurrence during the followup
+period, we use the length of followup time $t_j$ as the time of censoring. Each $t_j$ is computed
+with a granularity of 6 months. We fit a Cox regression model with L2-norm regularization
+using $\{(v_j , y_j , t_j)\}^N_{j=1}$  to compute the proportional hazard function of recurrence $\lambda (t|v)$.
+
+`python cox.py --data_dir {data_dir} --cluster_name {cluster_model_checkpoint} --noramlize {pooling_method_over_slides}`
