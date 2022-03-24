@@ -14,13 +14,13 @@ from tqdm import tqdm
 import pandas as pd
 from PIL import Image
 import shelve
+from dataset.dataloader import TCGA_CPTAC_Bag_Dataset
 
 if torch.cuda.is_available():
     device = 'cuda'
 else:
     device = 'cpu'
 print(device)
-
 
 def get_embeddings_bagging(feature_extractor, subtype_model, data_set):
     embedding_dict = defaultdict(list)
@@ -83,9 +83,9 @@ subtype_model.load_state_dict(torch.load(args.subtype_model_dir))
 subtype_model = nn.DataParallel(subtype_model, device_ids=device_ids)
 
 
-train_dataset = WSI_Dataset(args.root_dir, args.split_dir, 'train')
-val_dataset = WSI_Dataset(args.root_dir, args.split_dir, 'val')
-test_dataset = WSI_Dataset(args.root_dir, args.split_dir, 'test')
+train_dataset = TCGA_CPTAC_Bag_Dataset(args.root_dir, args.split_dir, 'train')
+val_dataset = TCGA_CPTAC_Bag_Dataset(args.root_dir, args.split_dir, 'val')
+test_dataset = TCGA_CPTAC_Bag_Dataset(args.root_dir, args.split_dir, 'test')
 
 
 with torch.no_grad():

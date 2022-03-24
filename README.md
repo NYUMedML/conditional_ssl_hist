@@ -1,6 +1,6 @@
 # Conditional Self-supervised for histopathology images
 
-This repository contains the code for the paper [Interpretable Prediction of Lung Squamous Cell Carcinoma Recurrence With Self-supervised Learning]().
+This repository contains the code for the paper [Interpretable Prediction of Lung Squamous Cell Carcinoma Recurrence With Self-supervised Learning](https://arxiv.org/pdf/2203.12204.pdf).
 
 ## Introduction
 In this study, we explore the morphological features of LSCC recurrence and metastasis with novel SSL method, based on conditional SSL. We propose a sampling mechanism within contrastive SSL framework for histopathology images that avoids overfitting to batch effects. 
@@ -44,6 +44,8 @@ Run the command to train the Inception V4 with conditional SSL on two-layer samp
 
 `torchrun train.py --data_dir {data_dir} --split_dir {annotation_dir} --batch_slide_num {number of slides in batch} --cos --out_dir {output_dir}`
 
+Pretrained weight can be downloaded [here](https://drive.google.com/drive/folders/1Uc7JZZRkBNxoKkDmy-fcLsy9cUz_ixcr?usp=sharing).
+
 ## Extract features
 
 To extract features, we first extract the tile representations with SSL pretrained Inception V4.
@@ -68,3 +70,19 @@ with a granularity of 6 months. We fit a Cox regression model with L2-norm regul
 using $\{(v_j , y_j , t_j)\}^N_{j=1}$  to compute the proportional hazard function of recurrence $\lambda (t|v)$.
 
 `python cox.py --data_dir {data_dir} --cluster_name {cluster_model_checkpoint} --noramlize {pooling_method_over_slides}`
+
+## Reference
+
+<blockquote>
+    <p>@misc{https://doi.org/10.48550/arxiv.2203.12204,
+  doi = {10.48550/ARXIV.2203.12204},
+  url = {https://arxiv.org/abs/2203.12204},
+  author = {Zhu, Weicheng and Fernandez-Granda, Carlos and Razavian, Narges},
+  keywords = {Computer Vision and Pattern Recognition (cs.CV), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  title = {Interpretable Prediction of Lung Squamous Cell Carcinoma Recurrence With Self-supervised Learning},
+  publisher = {arXiv},
+  year = {2022},
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+</p>
+</blockquote>
