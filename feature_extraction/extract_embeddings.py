@@ -76,7 +76,7 @@ annotations = {**tcga_annotation, **cptac_annotation}
 feature_extractor = InceptionV4(num_classes=256)
 load_pretrained(feature_extractor, args.feature_extractor_dir)
 feature_extractor.to('cuda')
-featurizer = nn.DataParallel(model, device_ids=device_ids)
+feature_extractor = nn.DataParallel(feature_extractor, device_ids=device_ids)
 
 subtype_model = InceptionV4(num_classes=2).to('cuda')
 subtype_model.load_state_dict(torch.load(args.subtype_model_dir))
