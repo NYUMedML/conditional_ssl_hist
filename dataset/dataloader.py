@@ -3,6 +3,8 @@ import pickle
 import torch
 from PIL import Image
 from torch.utils.data import Dataset
+from torchvision import transforms
+import cv2
 
 class TCGA_CPTAC_Dataset(Dataset):
     def __init__(self, cptac_dir, tcga_dir, split_dir, transform=None, mode='train', batch_slide_num=4, batch_size=128):
